@@ -2,9 +2,9 @@ import java.sql.*;
 
 public class Connect {
 
-    private final String url = "jdbc:postgresql:http://192.168.88.187:5432/postgres";
+    private final String url = "jdbc:postgresql://localhost:5432/postgres";
     private final String user = "postgres";
-    private final String password = "16091997";
+    private final String password = "abdutokt2004";
 
 
     public Connection connection() {
@@ -25,7 +25,7 @@ public class Connect {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("id_food")
-                + " " + resultSet.getInt("id_cafe"));
+                        + " " + resultSet.getInt("id_cafe"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -34,19 +34,47 @@ public class Connect {
     }
 
     public void popularProduct() {
-        String sql = "select f.name as name," +
-                "f.price as price," +
-                "count(zakaz.id_food)" +
-                "from zakaz" +
-                "inner join food f on f.id = zakaz.id_food" +
-                "group by f.price, f.name";
+        String sql = "select " +
+                " name, price, count(zakaz.id_food) " +
+                "from zakaz " +
+                "inner join food f on f.id = zakaz.id_food " +
+                "group by price, name";
         try {
             Statement statement = connection().createStatement();
-ResultSet resultSet = statement.executeQuery(sql);
-while (resultSet.next()) {
-    System.out.println(resultSet.getString("name") + " " + resultSet.getInt("price")
-    +  " " + resultSet.getInt("count"));
-}
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name") + " " + resultSet.getInt("price")
+                        + " " + resultSet.getInt("count"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void priceFood() {
+        String sql = "select name, price, delivery from food order by price desc";
+        try {
+            Statement statement = connection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name") + " " + resultSet.getInt("price")
+                         + " " + resultSet.getInt("delivery"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void foodDidNotOrder() {
+        String sql = "select " +
+                "name, id_food from food " +
+                "left outer join zakaz z on z.id_food = food.id";
+        try {
+            Statement statement = connection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name") + " " + resultSet.getInt("id_food"));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
