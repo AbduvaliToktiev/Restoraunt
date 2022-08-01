@@ -38,7 +38,7 @@ public class Connect {
                 " name, price, count(zakaz.id_food) " +
                 "from zakaz " +
                 "inner join food f on f.id = zakaz.id_food " +
-                "group by price, name";
+                "group by price, name order by count(zakaz.id_food) desc";
         try {
             Statement statement = connection().createStatement();
             ResultSet resultSet = statement.executeQuery(sql);

@@ -3,8 +3,8 @@ public class Main {
         Connect connect = new Connect();
         connect.connection();
         // connect.allZakaz(); // Все заказы
-        // connect.popularProduct(); // Популярные продукты
+         connect.popularProduct(); // Популярные продукты
         //  connect.priceFood(); // Цены на блюда
-        connect.foodDidNotOrder();
+       // connect.foodDidNotOrder();
     }
 }
